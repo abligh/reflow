@@ -1,0 +1,281 @@
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam odio felis, dignissim ac mattis eget, imperdiet vel sapien. Quisque aliquam turpis at eros pulvinar dignissim. Vivamus iaculis tellus in felis consectetur suscipit. Suspendisse pulvinar, ante non convallis gravida, neque augue mollis felis, id accumsan orci sem vitae ipsum. Nunc nec erat nisl, eget laoreet metus. Donec id nisl nec lorem eleifend lobortis at at metus. Praesent vestibulum lectus ut nisi dignissim non pharetra nibh rutrum. Fusce cursus gravida mauris, a malesuada augue viverra sed. Aenean neque tortor, imperdiet a placerat nec, egestas nec leo. Sed at turpis et nulla posuere adipiscing quis quis odio. Aliquam a leo magna.
+
+Mauris dictum mollis tortor. Pellentesque at ligula mi, nec sagittis purus. Aenean feugiat feugiat dolor, ac dapibus sem volutpat quis. Nunc eget tempor dui. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam posuere, nunc vitae sodales euismod, enim elit aliquam dui, eu tempor mi augue ac risus. Aenean nec purus tincidunt orci facilisis gravida. Mauris vel lobortis mauris. Suspendisse fermentum ligula eu diam laoreet sed eleifend dolor tincidunt. Sed id libero in mi fermentum lacinia ut at lectus. Morbi lobortis lorem in eros convallis molestie nec vel nisl. Nam tincidunt, nisi nec porttitor tincidunt, lectus nisi fermentum est, a fringilla justo magna at erat. Duis vulputate rhoncus pellentesque. Pellentesque sit amet nulla quis lectus pulvinar aliquam. Vestibulum faucibus pulvinar neque sed tempus.
+
+This line has a long word in floccinaucinihilipilificationfloccinaucinihilipilification we can see how that breaks.
+
+Handling   of  double  spaces  should  be  predictable.
+
+Here is some text which is already wrapped
+Here is some text which is already wrapped
+Here is some text which is already wrapped
+Here is some text which is already wrapped
+Here is some text which is already wrapped
+
+Here is some other text which is already wrapped
+Here is some other text which is already wrapped
+Here is some other text which is already wrapped
+Here is some other text which is already wrapped
+Here is some other text which is already wrapped
+
+ThisParagraphConsistsOfLinesWhichAreTooLongToBreakThisParagraphConsistsOfLinesWhichAreTooLongToBreak
+
+ThisParagraphConsistsOfLinesWhichAreTooLongToBreakThisParagraphConsistsOfLinesWhichAreTooLongToBreakThisParagraphConsistsOfLinesWhichAreTooLongToBreak ThisParagraphConsistsOfLinesWhichAreTooLongToBreakThisParagraphConsistsOfLinesWhichAreTooLongToBreakThisParagraphConsistsOfLinesWhichAreTooLongToBreak ThisParagraphConsistsOfLinesWhichAreTooLongToBreakThisParagraphConsistsOfLinesWhichAreTooLongToBreakThisParagraphConsistsOfLinesWhichAreTooLongToBreak
+
+Let's see if it breaks lists.
+
+1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam odio
+   felis, dignissim ac mattis eget, imperdiet vel sapien. Quisque
+   aliquam turpis at eros pulvinar dignissim. Vivamus iaculis tellus
+   in felis consectetur suscipit. Suspendisse pulvinar, ante non
+   convallis gravida, neque augue mollis felis, id accumsan orci sem
+   vitae ipsum. Nunc nec erat nisl, eget laoreet metus. Donec id nisl
+   nec lorem eleifend lobortis at at metus. Praesent vestibulum lectus
+   ut nisi dignissim non pharetra nibh rutrum. Fusce cursus gravida
+   mauris, a malesuada augue viverra sed. Aenean neque tortor, imperdiet
+   a placerat nec, egestas nec leo. Sed at turpis et nulla posuere
+
+2. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam odio
+   felis, dignissim ac mattis eget, imperdiet vel sapien. Quisque
+   aliquam turpis at eros pulvinar dignissim. Vivamus iaculis tellus
+   in felis consectetur suscipit. Suspendisse pulvinar, ante non
+   convallis gravida, neque augue mollis felis, id accumsan orci sem
+   vitae ipsum. Nunc nec erat nisl, eget laoreet metus. Donec id nisl
+   nec lorem eleifend lobortis at at metus. Praesent vestibulum lectus
+   ut nisi dignissim non pharetra nibh rutrum. Fusce cursus gravida
+   mauris, a malesuada augue viverra sed. Aenean neque tortor, imperdiet
+   a placerat nec, egestas nec leo. Sed at turpis et nulla posuere
+
+Here's some ASCII Art (only identified by the fact at least one
+line starts with a space):
+
+_________ _______  _______ _________
+\__   __/(  ____ \(  ____ \\__   __/
+   ) (   | (    \/| (    \/   ) (   
+   | |   | (__    | (_____    | |   
+   | |   |  __)   (_____  )   | |   
+   | |   | (            ) |   | |   
+   | |   | (____/\/\____) |   | |   
+   )_(   (_______/\_______)   )_(   
+
+One that's harder:
+
+|~~               
+|--\//~~||/~\ /~\ 
+|__/\\__||   |   |
+
+And a mail signature
+
+-- 
+My Name
+My Self Important Position
+
+And now for some tests on quoting.
+
+> Here is some text which has
+> been badly quoted, there are
+> some lines which are too short but also some lines which are much too long and need to be reflowed
+> like this one and the previous line which go well beyond what any normal person would accept as a reasonable line with to wrap
+
+> This text is a little more complicated because it contains
+> one person's email then in the middle of it switches
+> > to someone else's which should be
+> > made to stay separate because otherwise
+> > a bad thing might happen
+> and if we return to the first person, they might get terribly
+> confused.
+
+> > A typical mail conversation first speaker
+> > A typical mail conversation first speaker
+> > A typical mail conversation first speaker
+> > A typical mail conversation first speaker
+> > A typical mail conversation first speaker
+>
+> A typical mail conversation second speaker
+> A typical mail conversation second speaker
+> A typical mail conversation second speaker
+> A typical mail conversation second speaker
+>
+> > A typical mail conversation first speaker
+> > A typical mail conversation first speaker
+> > A typical mail conversation first speaker
+> > A typical mail conversation first speaker
+> > A typical mail conversation first speaker
+>
+> A typical mail conversation second speaker
+> A typical mail conversation second speaker
+> A typical mail conversation second speaker
+> A typical mail conversation second speaker
+
+A typical mail conversation third speaker
+A typical mail conversation third speaker
+A typical mail conversation third speaker
+A typical mail conversation third speaker
+A typical mail conversation third speaker
+
+> > A typical mail conversation first speaker
+> > A typical mail conversation first speaker
+> > A typical mail conversation first speaker
+> > A typical mail conversation first speaker
+> > A typical mail conversation first speaker
+> A typical mail conversation second speaker
+> A typical mail conversation second speaker
+> A typical mail conversation second speaker
+> A typical mail conversation second speaker
+> > A typical mail conversation first speaker
+> > A typical mail conversation first speaker
+> > A typical mail conversation first speaker
+> > A typical mail conversation first speaker
+> > A typical mail conversation first speaker
+> A typical mail conversation second speaker
+> A typical mail conversation second speaker
+> A typical mail conversation second speaker
+> A typical mail conversation second speaker
+A typical mail conversation third speaker
+A typical mail conversation third speaker
+A typical mail conversation third speaker
+A typical mail conversation third speaker
+A typical mail conversation third speaker
+
+[Start fragment from Linux Kernel]
+
+On Mon, 2012-08-27 at 13:31 -0700, Avi Kivity wrote:
+> On 08/27/2012 01:23 PM, Michael Wolf wrote:
+> > > 
+> > > How would a guest know what its entitlement is?
+> > > 
+> > > 
+> >
+> > Currently the Admin/management tool setting up the guests will put it on
+> > the qemu commandline. From this it is passed via an ioctl to the host.
+> > The guest will get the value from the host via a hypercall.
+> >
+> > In the future the host could try and do some of it automatically in some
+> > cases. 
+> 
+> Seems to me it's a meaningless value for the guest. Suppose it is
+> migrated to a host that is more powerful, and as a result its relative
+> entitlement is reduced. The value needs to be adjusted.
+
+This is why I chose to manage the value from the sysctl interface rather
+than just have it stored as a value in /proc. Whatever tool was used to
+migrate the vm could hopefully adjust the sysctl value on the guest.
+> 
+> This is best taken care of from the host side.
+
+Not sure what you are getting at here. If you are running in a cloud
+environment, you purchase a VM with the understanding that you are
+getting certain resources. As this type of user I don't believe you
+have any access to the host to see this type of information. So the
+user still wouldnt have a way to confirm that they are receiving what
+they should be in the way of processor resources.
+
+Would you please elaborate a little more on this?
+> 
+
+[End fragment from linux-kernel]
+
+[ Start of fragment]
+
+On Mon, 2012-08-27 at 11:50 -0700, Glauber Costa wrote:
+> On 08/27/2012 08:50 AM, Michael Wolf wrote:
+> > On Sat, 2012-08-25 at 19:36 -0400, Glauber Costa wrote:
+> >> On 08/24/2012 11:11 AM, Michael Wolf wrote:
+> >>> On Fri, 2012-08-24 at 08:53 +0400, Glauber Costa wrote:
+> >>>> On 08/24/2012 03:14 AM, Michael Wolf wrote:
+> >>>>> This is an RFC regarding the reporting of stealtime. In the case of
+> >>>>> where you have a system that is running with partial processors such as
+> >>>>> KVM the user may see steal time being reported in accounting tools such
+> >>>>> as top or vmstat. This can cause confusion for the end user. To
+> >>>>> ease the confusion this patch set adds a sysctl interface to set the
+> >>>>> cpu entitlement. This is the percentage of cpu that the guest system is
+> >>>>> expected to receive. As long as the steal time is within its expected
+> >>>>> range it will show up as 0 in /proc/stat. The user will then see in the
+> >>>>> accounting tools that they are getting a full utilization of the cpu
+> >>>>> resources assigned to them.
+> >>>>>
+> >>>>
+> >>>> And how is such a knob not confusing?
+> >>>>
+> >>>> Steal time is pretty well defined in meaning and is shown in top for
+> >>>> ages. I really don't see the point for this.
+> >>>
+> >>> Currently you can see the steal time but you have no way of knowing if
+> >>> the cpu utilization you are seeing on the guest is the expected amount.
+> >>> I decided on making it a knob because a guest could be migrated to
+> >>> another system and it's entitlement could change because of hardware or 
+> >>> load differences. It could simply be a /proc file and report the
+> >>> current entitlement if needed. As things are currently implemented I 
+> >>> don't see how someone knows if the guest is running as expected or
+> >>> whether there is a problem.
+> >>>
+> >>
+> >> Turning off steal time display won't get even close to displaying the
+> >> information you want. What you probably want is a guest-visible way to
+> >> say how many miliseconds you are expected to run each second. Right?
+> > 
+> > It is not clear to me how knowing how many milliseconds you are
+> > expecting to run will help the user. Currently the users will run top
+> > to see how well the guest is running. If they see _any_ steal time some
+> > users think they are not getting the full use of their processor
+> > entitlement.
+> >
+> 
+> And your plan is just to selectively lie about it, but disabling it with
+> a knob?
+
+It is about making it very obvious to the end user whether they are
+receiving their cpu entitlement. If there is more steal time than
+expected that will still show up. I have experimented, and it seems to
+work, to put the raw stealtime at the end of each cpu line
+in /proc/stat. That way the raw data is there as well. 
+
+Do you have another suggestion to communicate to the user whether they
+are receiving their full entitlement? At the very least shouldn't the
+entitlement reside in a /proc file somewhere so that the user could look
+up the value and "do the math"?
+
+> 
+> > Maybe I'm missing what you are proposing, but even if you knew the
+> > milliseconds that you were expecting for your processor you would have
+> > to adjust the top output in your head so to speak. You would see the
+> > utilization and then say 'ok that matches the number of milliseconds I
+> > expected to run..." If we take away the steal time (as long as it is
+> > equal to or less than the expected amount of steal time) then the user
+> > running top will see the 100% utilization.
+> > 
+> 
+
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+the body of a message to majordomo@xxxxxxxxxxxxxxx
+More majordomo info at http://vger.kernel.org/majordomo-info.html
+Please read the FAQ at http://www.tux.org/lkml/
+
+[End of fragment]
+
+[Start of fragment]
+On Wed, Aug 22, 2012 at 01:00:32PM -0700, Tejun Heo wrote:
+> Hello,
+> 
+> On Wed, Aug 22, 2012 at 10:04:02AM -0700, Kent Overstreet wrote:
+> > +#define BIO_KMALLOC_POOL NULL
+> 
+> I would much prefer just doing
+> 
+> if (!bs) {
+> /* do kmalloc/kfree thing */
+> } else {
+> /* do bioset thing */
+> }
+> 
+> NULL @bs indicating no bioset is perfectly natural and so is using
+> generic memory allocation in the absense of bioset. I don't see any
+> value in defining Bio_KMALLOC_POOL to be NULL.
+
+Eh, kind of disagree but at this point I don't care that much, I'll
+change it.
+
+[End of fragment]
