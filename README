@@ -1,1 +1,5 @@
-reflow.pl reformats mail messages sensibly
+(c) 2012 Alex Bligh <alex@alex.org.uk>
+
+Licensed under the Apache licence - see LICENSE for details
+
+'reflow' reformats mail messages sensibly

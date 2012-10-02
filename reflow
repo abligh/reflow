@@ -1,5 +1,11 @@
 #!/usr/bin/perl
 
+# reflow - reformat a mail message sensibly
+#
+# (c) 2012 Alex Bligh <alex@alex.org.uk>
+#
+#  Licensed under the Apache licence - seeLICENSEfor details
+
 use strict;
 use warnings;
 
