@@ -2,4 +2,25 @@
 
 Licensed under the Apache licence - see LICENSE for details
 
-'reflow' reformats mail messages sensibly
+'reflow' reformats mail messages sensibly. It works as a
+UNIX pipe, reformatting STDIN to STDOUT, rather like the fmt
+command. However, it's designed to intelligently process text,
+particularly mail messages, and deal with quoting and indentation.
+
+It can be wired up to any editor, or (on OS-X) to Automator and Services,
+to reflow any editable window on a keypress.
+
+Usage: reflow [options] < INFILE > OUTFILE
+
+Options:
+  -w, --width N               Set width to N (default 76)
+  -s, --strip-signature       Strip email signatures
+  -q, --quote N               Increase quotation level by N, or
+                              decrease quotation level by -N
+  -i, --indent N              Increase indent level by 4N, or
+                              decrease indent level by -4N
+  -m, --max-quote N           Maximum quotation level of N
+                              (default 10)
+  -y, --min-width N           Minimum text width of N
+                              (default 20)
+  -h, --help                  Print this message
