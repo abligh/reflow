@@ -10,6 +10,10 @@ use strict;
 use warnings;
 use Getopt::Long;
 use FindBin;
+use XML::XPath;
+use XML::XPath::XMLParser;
+use MIME::Base64;
+use HTML::Parser 3.00 ();
 
 use constant
 {
@@ -24,12 +28,17 @@ my $option_quote = 0;
 my $option_indent = 0;
 my $option_maxquote = 10;
 my $option_minwidth = 20;
+my $option_archive;
 
 my @unquotedlines;
 my @rawlines;
 my $quotes=0;
 my $mode = wrap;
 my $lastblank = 0;
+
+my %htmltotxtinside;
+my @htmltotextbuffer;
+my @htmltotextoutput;
 
 sub Syntax
 {
@@ -48,6 +57,7 @@ Options:
                               (default 10)
   -y, --min-width N           Minimum text width of N
                               (default 20)
+  -a, --web-archive FILE      Read FILE as a web archive
   -h, --help                  Print this message
 
 STOP
@@ -63,6 +73,7 @@ sub ParseOptions
              "indent|i=i" => \$option_indent,
              "max-quote|m=i" => \$option_maxquote,
              "min-width|y=i" => \$option_minwidth,
+	     "web-archive|a=s" => \$option_archive,
              "help|h" => sub { Syntax(); exit(0); }
         ))
     {
@@ -77,13 +88,13 @@ sub ParseOptions
     }
 }
 
-sub empty
+sub Empty
 {
     @unquotedlines =();
     @rawlines = ();
 }
 
-sub msubstr
+sub MSubstr
 {
     my $t = shift @_;
     my $s = shift @_;
@@ -95,24 +106,25 @@ sub msubstr
     return substr($t, $s, $l);
 }
 
-sub getquoteprefix
+sub GetQuotePrefix
 {
     my $level = shift @_;
     my $noindent = shift @_;
     $level = $quotes unless defined($level);
     $level += $option_quote;
     $level = 0 if ($level<0);
-    my $quoteprefix = "> " x $level;
-    $quoteprefix = ("> " x ($option_maxquote-1))."... > " if ($level > $option_maxquote);
+    my $quoteprefix = ">" x $level;
+    $quoteprefix = (">" x ($option_maxquote-1))."...>" if ($level > $option_maxquote);
+    $quoteprefix.=" " if ($level>0);
     $quoteprefix.= "    " x $option_indent if (($option_indent > 0) && !$noindent);
     return $quoteprefix;
 }
 
-sub outputwrap
+sub OutputWrap
 {
     my $text = join(' ', @unquotedlines);
     $text =~ s/\s+/ /g;
-    my $quoteprefix = getquoteprefix;
+    my $quoteprefix = GetQuotePrefix;
     my $width = $option_width - length($quoteprefix);
     $width = $option_minwidth if ($width<$option_minwidth);
     while ($text !~ /^\s*$/)
@@ -128,28 +140,28 @@ sub outputwrap
 	else
 	{
 	    for (;
-		 ($breakat > 0) && (msubstr($text, $breakat, 1) !~ /\s/);
+		 ($breakat > 0) && (MSubstr($text, $breakat, 1) !~ /\s/);
 		 $breakat--) {}
 	    # handle words too big to fit. Often URLs so just go over width
 	    if (!$breakat)
 	    {
 		for ($breakat = $width-1;
-		     ($breakat<length($text)) && (msubstr($text, $breakat, 1) =~ /\S/);
+		     ($breakat<length($text)) && (MSubstr($text, $breakat, 1) =~ /\S/);
 		     $breakat++) {}
 	    }
 	}
-	my $fragment = msubstr($text, 0, $breakat);
+	my $fragment = MSubstr($text, 0, $breakat);
 	$fragment =~ s/^\s+//g;
 	$fragment =~ s/\s+$//g;
-	$text = msubstr($text, $breakat+1);
+	$text = MSubstr($text, $breakat+1);
 	print $quoteprefix.$fragment."\n";
     }
 }
 
-sub outputsignature
+sub OutputSignature
 {
     return if ($option_stripsignature);
-    my $quoteprefix = getquoteprefix;
+    my $quoteprefix = GetQuotePrefix;
     foreach my $fragment (@unquotedlines)
     {
 	$fragment =~ s/\s+$//g unless ($fragment =~ /^--/);
@@ -158,9 +170,9 @@ sub outputsignature
 }
 
 # Called with a parameter of the unquoted text to output with \n's in
-sub outputdontwrap
+sub OutputDontWrap
 {
-    my $quoteprefix = getquoteprefix;
+    my $quoteprefix = GetQuotePrefix;
     foreach my $fragment (@unquotedlines)
     {
 	$fragment =~ s/\s+$//g;
@@ -168,21 +180,21 @@ sub outputdontwrap
     }
 }
 
-sub output
+sub Output
 {
     if ($#rawlines >= 0)
     {
 	if ($mode == wrap)
 	{
-	    outputwrap;
+	    OutputWrap;
 	}
 	elsif ($mode == signature)
 	{
-	    outputsignature;
+	    OutputSignature;
 	}
 	elsif ($mode == dontwrap)
 	{
-	    outputdontwrap;
+	    OutputDontWrap;
 	}
 	else
 	{
@@ -190,19 +202,17 @@ sub output
 	}
 	$lastblank = 0 if ($#unquotedlines >= 0) && (join ('',@unquotedlines) ne "");
     }
-    empty;
+    Empty;
 }
 
-ParseOptions;
-
-while (<>)
+sub DoLine
 {
-    chomp;
+    my $line = shift @_;
+    chomp ($line);
 
     # replace tabs with 8 spaces
-    s/\t/        /g;
+    $line =~ s/\t/        /g;
 
-    my $line = $_;
     my $unqline = $line;
     my $quotelevel = 0;
     while ($unqline =~ s/^\s*>( )?//)
@@ -217,27 +227,26 @@ while (<>)
 
     if ($line =~ /^\s*$/)
     {
-	output;
-	my $quoteprefix = getquoteprefix(0, 1);
+	Output;
+	my $quoteprefix = GetQuotePrefix(0, 1);
 	print "$quoteprefix\n";
 	$mode = wrap;
 	$quotes = 0;
 	$lastblank = 1;
-	next; # do not record this line
+	return;
     }
     elsif ($unqline =~ /^--( )?$/ && $lastblank) # Signature separator
     {
-	output;
+	Output;
 	$mode = signature;
-	$quotes = 0;
     }
     elsif ($unqline =~ /^\s*$/)
     {
-	output;
+	Output;
 	$mode = wrap;
-	$mode = dontwrap if ($unqline=~/^\s/);
+	$mode = dontwrap if (($unqline=~/^\s/) && ($unqline!~/^\s*$/));
 	$quotes = $quotelevel;
-	my $quoteprefix = getquoteprefix(undef, 1);
+	my $quoteprefix = GetQuotePrefix(undef, 1);
 	print "$quoteprefix\n";
 	$lastblank = 1;
     }
@@ -245,13 +254,13 @@ while (<>)
     {
 	my $oldquotelevel = $quotes;
 	# Quote level changed without a blank line - how rude
-	output;
+	Output;
 	$mode = wrap;
-	$mode = dontwrap if ($unqline=~/^\s/);
+	$mode = dontwrap if (($unqline=~/^\s/) && ($unqline!~/^\s*$/));
 	$quotes = $quotelevel;
 	if (!$lastblank && ($quotelevel<$oldquotelevel)) # else we add spaces after 'On ... x wrote'
 	{
-	    my $quoteprefix = getquoteprefix(($oldquotelevel<$quotelevel)?$oldquotelevel:$quotelevel, 1);
+	    my $quoteprefix = GetQuotePrefix(($oldquotelevel<$quotelevel)?$oldquotelevel:$quotelevel, 1);
 	    print "$quoteprefix\n";
 	    $lastblank = 1;
 	}
@@ -268,4 +277,100 @@ while (<>)
     push @unquotedlines, $unqline;
 }
 
-output;
+sub HtmlToTextPrefix
+{
+    my $text = shift @_;
+    $text =~ s/\xc2\xa0/ /g;
+    my $num = $htmltotxtinside{blockquote};
+    $num = 0 unless(defined($num));
+    return $text unless($num);
+    return (">" x $num).(($text eq "")?"":" ").$text;
+}
+
+sub HtmlToTextOutput
+{
+    my $outputifempty = shift @_;
+    return unless (($#htmltotextbuffer>=0) || $outputifempty);
+    push @htmltotextoutput, HtmlToTextPrefix(join(' ', @htmltotextbuffer))."\n";
+    @htmltotextbuffer=();
+}
+
+sub HtmlToTextTag
+{
+   my($tag, $num) = @_;
+   if (($tag eq "br") && ($num>0))
+   {
+       HtmlToTextOutput(1);
+   }
+   if (($tag=~ /^(blockquote|div)$/) && ($num<0)) # ending a blockquote is equivalent to a <br/>
+   {
+       HtmlToTextOutput(0);
+   }
+   $htmltotxtinside{$tag} += $num;
+}
+
+sub HtmlToTextText
+{
+    return if $htmltotxtinside{script} || $htmltotxtinside{style};
+    push @htmltotextbuffer, $_[0];
+}
+
+# The only way to get text out of Mail.app with quotes in is to take it
+# off the clipboard as a webarchive. Some reverse engineering produced
+# this webarchive decoder.
+#
+sub DoArchive
+{
+    open my $plutil, "plutil -convert xml1 -o - \"$option_archive\"|" || die ("Cannot run plutil: $!");
+    my $xml;
+    while (<$plutil>)
+    {
+	$xml .= $_;
+    }
+    close ($plutil);
+    die ("Cannot read web archive") unless defined($xml);
+     
+    my $xp = XML::XPath->new(xml => $xml);
+    die ("Cannot parse web archive") unless defined($xp);
+    my $base64 = $xp->getNodeText('/plist/dict/dict/data');
+    die ("Cannot find data within web archive") unless defined($base64);
+    my $html = decode_base64($base64);
+    die ("Cannot find data within web archive") unless defined($html);
+
+    undef %htmltotxtinside;
+    @htmltotextbuffer=();
+    @htmltotextoutput=();
+
+    HTML::Parser->new(api_version => 3,
+		      handlers    => [start => [\&HtmlToTextTag, "tagname, '+1'"],
+				      end   => [\&HtmlToTextTag, "tagname, '-1'"],
+				      text  => [\&HtmlToTextText, "dtext"],
+		      ],
+		      marked_sections => 1,
+		      unbroken_text => 1,
+	)->parse($html) || die "Can't parseweb archive  HTML: $!\n";;
+
+    HtmlToTextOutput;
+
+    foreach my $line (@htmltotextoutput)
+    {
+	DoLine($line);
+    }
+    Output;
+}
+
+
+ParseOptions;
+
+if (defined($option_archive))
+{
+    DoArchive;
+}
+else
+{
+    while (<>)
+    {
+	DoLine($_);
+    }
+    Output;
+}
